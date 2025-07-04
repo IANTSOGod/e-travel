@@ -11,7 +11,11 @@ export default function Header() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/register") {
+    if (
+      pathname === "/register" ||
+      pathname === "/reset-password" ||
+      pathname === "/request-reset"
+    ) {
       setisshow(false);
     } else {
       setisshow(true);

@@ -12,6 +12,13 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    sendResetPassword: async ({ user, token, url }, request) => {
+      await sendEmail({
+        to: user.email,
+        subject: "E-travel reset password",
+        html: `<p>Bonjour,</p><p>Cliquez ici pour changer votre mot de passe :</p><a href="${url}">Vérifier</a>`,
+      });
+    },
   },
   emailVerification: {
     sendOnSignUp: true,
@@ -20,7 +27,7 @@ export const auth = betterAuth({
     sendVerificationEmail: async ({ user, token, url }, request) => {
       await sendEmail({
         to: user.email,
-        subject: "E-travel verify you email",
+        subject: "E-travel verify your email",
         html: `<p>Bonjour,</p><p>Cliquez ici pour vérifier votre adresse email :</p><a href="${url}">Vérifier</a>`,
       });
     },

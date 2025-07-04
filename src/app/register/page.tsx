@@ -49,6 +49,7 @@ export default function page() {
 
     if (data) {
       console.log(data.user);
+      alert("Verify your mail box");
       router.push("/");
     }
 

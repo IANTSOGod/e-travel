@@ -14,6 +14,7 @@ import { Input } from "../ui/input";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { LoginInterface } from "@/interfaces/Login.interface";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
 export default function LoginComponent() {
   const [formdata, setdataform] = useState<LoginInterface>(
@@ -33,15 +34,18 @@ export default function LoginComponent() {
         password: formdata.password,
         rememberMe: false,
       },
-      {}
+      {
+        onError(context) {
+          if (context.response.status.toString().startsWith("4")) {
+            alert(context.error.message);
+          }
+        },
+      }
     );
     if (data) {
       setuserdata(data.user);
       console.log(data.user);
       setOpen(false); // ✅ fermer le dialog après succès
-    }
-    if (error) {
-      alert(error.message);
     }
   };
 
@@ -80,7 +84,16 @@ export default function LoginComponent() {
           </div>
 
           <div>
-            <Label htmlFor="password">Password</Label>
+            <div className="gap-x-[200px] flex">
+              <Label htmlFor="password">Password</Label>
+              <Link
+                href={"/request-reset"}
+                className="text-blue-500 hover:underline"
+                onClick={() => setOpen(false)}
+              >
+                Forgot password?
+              </Link>
+            </div>
             <Input
               id="password"
               type="password"
