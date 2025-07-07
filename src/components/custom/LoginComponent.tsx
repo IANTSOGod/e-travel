@@ -21,7 +21,7 @@ export default function LoginComponent() {
   const [formdata, setdataform] = useState<LoginInterface>(
     {} as LoginInterface
   );
-  const [open, setOpen] = useState(false); // ✅ état pour contrôler le dialog
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setdataform({ ...formdata, [e.target.name]: e.target.value });
