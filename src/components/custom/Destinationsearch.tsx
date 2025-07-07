@@ -1,3 +1,4 @@
+"use client";
 import {
   Select,
   SelectContent,
@@ -10,8 +11,12 @@ import {
 import { Calendar, Home, User } from "lucide-react";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
+import { useState } from "react";
+import CalendarSelect from "./CalendarSelect";
 
 export default function Destinationsearch() {
+  const [checkin, setchekin] = useState<Date>();
+  const [checkout, setcheckout] = useState<Date>();
   return (
     <div className="flex flex-col md:flex-row md:h-[150px] w-auto h-auto py-5 md:py-0 md:mx-[150px] mx-5 px-10 items-center md:mt-[120px] mt-10 bg-white">
       <Select defaultValue={"6730 Luna Land North"}>
@@ -35,51 +40,17 @@ export default function Destinationsearch() {
           </SelectGroup>
         </SelectContent>
       </Select>
+      <CalendarSelect
+        title="Check-In"
+        date={checkin}
+        setdate={setchekin}
+      ></CalendarSelect>
 
-      <Select defaultValue={"19-01-2025"}>
-        <SelectTrigger className="md:w-1/4 w-[300px] !h-[60px]">
-          <div className="flex gap-x-[30px] items-center mx-auto">
-            <div>
-              <Calendar className="text-red-400"></Calendar>
-            </div>
-            <div>
-              <Label className="text-gray-400">Check-in</Label>
-              <SelectValue className="text-black font-bold" />
-            </div>
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Check-in</SelectLabel>
-            <SelectItem value={"19-01-2025"} key={"1"}>
-              19-01-2025
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-
-      <Select defaultValue={"19-01-2025"}>
-        <SelectTrigger className="md:w-1/4 w-[300px] !h-[60px]">
-          <div className="flex gap-x-[30px] items-center mx-auto">
-            <div>
-              <Calendar className="text-red-400"></Calendar>
-            </div>
-            <div>
-              <Label className="text-gray-400">Check-Out</Label>
-              <SelectValue className="text-black font-bold" />
-            </div>
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Check-Out</SelectLabel>
-            <SelectItem value={"19-01-2025"} key={"1"}>
-              19-01-2025
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-
+      <CalendarSelect
+        title="Check-Out"
+        date={checkout}
+        setdate={setcheckout}
+      ></CalendarSelect>
       <Select defaultValue={"adult: 4,child: 2"}>
         <SelectTrigger className="md:w-1/4 w-[300px] !h-[60px]">
           <div className="flex gap-x-[30px] items-center mx-auto">

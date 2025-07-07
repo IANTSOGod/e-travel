@@ -8,7 +8,8 @@ export default function page() {
   return (
     <div>
       <div
-        className={`w-full h-[670px] bg-[url('../assets/images/background.jpg')] bg-cover bg-center mt-[-70px]`}
+        className={`w-full bg-[url('../assets/images/background.jpg')] bg-cover bg-center mt-[-70px] overflow-y-hidden`}
+        style={{ height: "calc(100vh + 5px)" }}
       >
         <div className="md:pt-[200px] pt-[100px] md:ml-[150px] ml-[30px] ">
           <Label className="md:text-6xl text-4xl text-white dancing">

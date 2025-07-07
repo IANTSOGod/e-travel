@@ -58,7 +58,7 @@ export default function LoginComponent() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          onClick={() => setOpen(true)} // ✅ ouvrir manuellement
+          onClick={() => setOpen(true)}
           className="w-[150px] mr-[30px] border-red-400 border-2 text-red-400 hover:bg-red-400 hover:text-white"
           variant={"outline"}
         >

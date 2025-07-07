@@ -10,11 +10,6 @@ import { Label } from "../ui/label";
 
 export default function Header() {
   const session = authClient.useSession();
-  const unauthentifiedroute = [
-    "/register",
-    "/reset-password",
-    "/request-reset",
-  ];
   const [ishow, setisshow] = useState<Boolean>(true);
   const pathname = usePathname();
 
@@ -23,7 +18,11 @@ export default function Header() {
   };
 
   useEffect(() => {
-    if (pathname in unauthentifiedroute) {
+    if (
+      pathname === "/register" ||
+      pathname === "/reset-password" ||
+      pathname === "/request-reset"
+    ) {
       setisshow(false);
     } else {
       setisshow(true);
