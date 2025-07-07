@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Label } from "../ui/label";
+import Othermenu from "./Othermenu";
 
 export default function Header() {
   const session = authClient.useSession();
@@ -65,6 +66,7 @@ export default function Header() {
               Register
             </Button>
           </Link>
+          {/* <Othermenu></Othermenu> */}
         </div>
       )}
     </div>

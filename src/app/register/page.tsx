@@ -11,6 +11,8 @@ import SignupInteface from "@/interfaces/Signup.interface";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
+import { InfoIcon } from "lucide-react";
 
 export default function page() {
   // 1. Tableau d'images
@@ -38,24 +40,39 @@ export default function page() {
   );
 
   const signup = async () => {
-    const { data, error } = await authClient.signUp.email(
+    await authClient.signUp.email(
       {
         email: formdata.email,
         password: formdata.password,
         name: `${formdata.fname} ${formdata.lname}`,
       },
-      {}
+      {
+        onSuccess(context) {
+          toast(
+            <div className="flex flex-row gap-x-2">
+              <InfoIcon className="w-5 h-5 text-green-400"></InfoIcon>
+              <Label className="text-green-400">Success</Label>
+            </div>,
+            {
+              description: "Account created successfully",
+            }
+          );
+        },
+        onError(context) {
+          if (context.response.status.toString().startsWith("4")) {
+            toast(
+              <div className="flex flex-row gap-x-2">
+                <InfoIcon className="w-5 h-5 text-red-400"></InfoIcon>
+                <Label className="text-red-400">Error</Label>
+              </div>,
+              {
+                description: context.error.message,
+              }
+            );
+          }
+        },
+      }
     );
-
-    if (data) {
-      console.log(data.user);
-      alert("Verify your mail box");
-      router.push("/");
-    }
-
-    if (error) {
-      alert(error.message);
-    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -36,13 +36,8 @@ export default function CalendarSelect({
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setdate}
-            initialFocus
-          />
+        <PopoverContent className="w-auto px-auto" align="center">
+          <Calendar mode="single" selected={date} onSelect={setdate} />
         </PopoverContent>
       </Popover>
     </div>

@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Dialog,
   DialogClose,
@@ -15,12 +14,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { LoginInterface } from "@/interfaces/Login.interface";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { toast } from "sonner";
+import { InfoIcon } from "lucide-react";
 
 export default function LoginComponent() {
   const [formdata, setdataform] = useState<LoginInterface>(
     {} as LoginInterface
   );
-  const [userdata, setuserdata] = useState({});
   const [open, setOpen] = useState(false); // ✅ état pour contrôler le dialog
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ export default function LoginComponent() {
   };
 
   const login = async () => {
-    const { data, error } = await authClient.signIn.email(
+    const { data } = await authClient.signIn.email(
       {
         email: formdata.email,
         password: formdata.password,
@@ -37,15 +37,32 @@ export default function LoginComponent() {
       {
         onError(context) {
           if (context.response.status.toString().startsWith("4")) {
-            alert(context.error.message);
+            toast(
+              <div className="flex flex-row gap-x-2">
+                <InfoIcon className="w-5 h-5 text-red-400"></InfoIcon>
+                <Label className="text-red-400">Error</Label>
+              </div>,
+              {
+                description: context.error.message,
+              }
+            );
           }
+        },
+        onSuccess(context) {
+          toast(
+            <div className="flex flex-row gap-x-2">
+              <InfoIcon className="w-5 h-5 text-green-400"></InfoIcon>
+              <Label className="text-green-400">Success</Label>
+            </div>,
+            {
+              description: "Login succesfull",
+            }
+          );
         },
       }
     );
     if (data) {
-      setuserdata(data.user);
-      console.log(data.user);
-      setOpen(false); // ✅ fermer le dialog après succès
+      setOpen(false);
     }
   };
 
