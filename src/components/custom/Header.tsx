@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { LogOut, PlaneLanding, User } from "lucide-react";
+import { ArrowLeft, LogOut, PlaneLanding, User } from "lucide-react";
 import LoginComponent from "./LoginComponent";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Label } from "../ui/label";
-import Othermenu from "./Othermenu";
+// import Othermenu from "./Othermenu";
 
 export default function Header() {
   const session = authClient.useSession();
@@ -37,6 +37,13 @@ export default function Header() {
       } h-[65px] bg-none pt-[20px] md:px-[150px] px-[50px] gap-x-[70px] `}
     >
       <div className="text-red-500 font-bold flex gap-x-2">
+        {pathname === "/me" ? (
+          <Link href={"/"}>
+            <ArrowLeft></ArrowLeft>
+          </Link>
+        ) : (
+          <></>
+        )}
         <PlaneLanding></PlaneLanding>e-Travel
       </div>
       <div className="hidden md:flex gap-x-[30px] font-bold text-blue-400">
