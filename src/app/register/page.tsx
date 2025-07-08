@@ -9,10 +9,11 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import SignupInteface from "@/interfaces/Signup.interface";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { InfoIcon } from "lucide-react";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 export default function page() {
   // 1. Tableau d'images
@@ -24,7 +25,7 @@ export default function page() {
 
   // 2. Index courant
   const [imgIndex, setImgIndex] = useState(0);
-
+  const createNotif = useMutation(api.notifications.createNotification);
   // 3. Change toutes les 3 secondes
   useEffect(() => {
     const interval = setInterval(() => {
@@ -34,13 +35,19 @@ export default function page() {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  const router = useRouter();
   const [formdata, setformdata] = useState<SignupInteface>(
     {} as SignupInteface
   );
 
+  const welcomenotif = async (id: string) => {
+    await createNotif({
+      userId: id,
+      message: "Bienvenue sur E-travel,découvrez le monde avec nous !",
+    });
+  };
+
   const signup = async () => {
-    await authClient.signUp.email(
+    const { data } = await authClient.signUp.email(
       {
         email: formdata.email,
         password: formdata.password,
@@ -54,7 +61,7 @@ export default function page() {
               <Label className="text-green-400">Success</Label>
             </div>,
             {
-              description: "Account created successfully",
+              description: "Account created, please validate your email now",
             }
           );
         },
@@ -73,6 +80,11 @@ export default function page() {
         },
       }
     );
+
+    if (data) {
+      const userId = data.user.id;
+      await welcomenotif(userId);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

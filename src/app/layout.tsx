@@ -11,8 +11,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <Header></Header>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ConvexClientProvider>
+          <>
+            <Header></Header>
+            {children}
+          </>
+        </ConvexClientProvider>
         <Toaster></Toaster>
       </body>
     </html>

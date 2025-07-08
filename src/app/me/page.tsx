@@ -9,6 +9,11 @@ export default function page() {
   useEffect(() => {
     console.log(data?.user);
   }, [data]);
-  
-  return <div></div>;
+
+  return (
+    <div className="w-screen h-screen flex">
+      <div className="w-1/6 border-r-2 border-gray"></div>
+      <div className="w-5/6 bg-blue-400"></div>
+    </div>
+  );
 }
