@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: iantso
+      POSTGRES_PASSWORD: nahida
+      POSTGRES_DB: e_travel
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: goyuxiangozzz
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  convex:
+    image: node:20
+    container_name: convex
+    working_dir: /app
+    volumes:
+      - ./convex:/app
+    command: >
+      sh -c "npm install -g convex && convex dev"
+    ports:
+      - "4000:4000"
+    environment:
+      CONVEX_DEPLOYMENT: dev:colorless-pony-93
+      NEXT_PUBLIC_CONVEX_URL: https://colorless-pony-93.convex.cloud
+
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - convex
+      - minio
+    environment:
+      DATABASE_URL: postgresql://iantso:nahida@postgres:5432/e_travel?schema=public
+      BETTER_AUTH_SECRET: ZFu07DkyrjS8QiiyEKgw42XljBWom5LN
+      BETTER_AUTH_URL: http://localhost:3000
+      EMAIL_PROVIDER: iantsochristianrazafindrazaka@gmail.com
+      EMAIL_PASSWORD: ggvt mblh hyve vvlz
+
+volumes:
+  postgres_data:
+  minio_data:
