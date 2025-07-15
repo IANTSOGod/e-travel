@@ -1,9 +1,6 @@
-// convex/notifications.ts
-
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-// 🔁 Query : récupérer les notifications d'un utilisateur
 export const getNotifications = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
@@ -15,7 +12,6 @@ export const getNotifications = query({
   },
 });
 
-// ✅ Mutation : créer une notification
 export const createNotification = mutation({
   args: {
     userId: v.string(),
@@ -31,10 +27,16 @@ export const createNotification = mutation({
   },
 });
 
-// ☑️ Mutation : marquer comme lu
 export const markAsRead = mutation({
   args: { id: v.id("notifications") },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, { read: true });
+  },
+});
+
+export const Unread = mutation({
+  args: { id: v.id("notifications") },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { read: false });
   },
 });

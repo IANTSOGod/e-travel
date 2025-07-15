@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import background from "@/assets/images/background.jpg";
 
 export default function PlaceCard() {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false); // état pour détecter le survol
 
   return (
     <motion.div
@@ -22,6 +22,7 @@ export default function PlaceCard() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* image de fond animée */}
         <motion.img
           src={background.src}
           alt="place"
@@ -30,8 +31,19 @@ export default function PlaceCard() {
           transition={{ duration: 0.5 }}
         />
 
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black/50 to-transparent z-[5]"
+          />
+        )}
+
         <div className="relative z-10 w-full h-full">
           <Card className="bg-transparent w-full h-full flex flex-col justify-between">
+            {/* badge like */}
             <CardHeader>
               <motion.div
                 whileHover={{ scale: 1.1 }}
@@ -43,7 +55,8 @@ export default function PlaceCard() {
               </motion.div>
             </CardHeader>
 
-            <CardFooter className="relative flex items-center justify-center h-[60px]">
+            {/* footer avec le titre affiché au hover */}
+            <CardFooter className="relative flex items-center justify-center">
               {isHovered && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}

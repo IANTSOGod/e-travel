@@ -9,6 +9,8 @@ import { authClient } from "@/lib/auth-client";
 import { Label } from "../ui/label";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import NotificationMenu from "./NotificationMenu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 export default function Header() {
   const session = authClient.useSession();
@@ -22,19 +24,16 @@ export default function Header() {
     userId ? { userId } : "skip"
   );
 
-  // Affichage pour debug
   useEffect(() => {
     if (notifications) {
       console.log(notifications);
     }
   }, [notifications]);
 
-  // Fonction de déconnexion
   const logout = async () => {
     await authClient.signOut();
   };
 
-  // ✅ Cache le header si on est sur des routes d'authentification
   useEffect(() => {
     const hiddenRoutes = ["/register", "/reset-password", "/request-reset"];
     setisshow(!hiddenRoutes.includes(pathname));
@@ -66,14 +65,29 @@ export default function Header() {
       </div>
 
       {session?.data?.user ? (
-        <div
-          className="ml-auto flex text-red-400 gap-x-2 cursor-pointer"
-          onClick={() => {
-            router.push("/me");
-          }}
-        >
-          <User className="rounded-3xl bg-gray-100 w-[30px] h-[30px] p-1 border-1 border-red-400" />
-          <Label className="-mt-5 md:text-md font-bold md:flex hidden cursor-pointer">
+        <div className="ml-auto flex text-red-400 gap-x-2 cursor-pointer">
+          <Tooltip>
+            <TooltipTrigger>
+              <NotificationMenu
+                userid={session.data.user.id}
+              ></NotificationMenu>
+            </TooltipTrigger>
+            <TooltipContent>
+              <Label>Notifications</Label>
+            </TooltipContent>
+          </Tooltip>
+          <User
+            className="rounded-3xl bg-gray-100 w-[35px] h-[35px] p-1 border-1 border-red-400"
+            onClick={() => {
+              router.push("/me");
+            }}
+          />
+          <Label
+            className="-mt-5 md:text-md font-bold md:flex hidden cursor-pointer"
+            onClick={() => {
+              router.push("/me");
+            }}
+          >
             {session.data.user.name}
           </Label>
           <LogOut className="!text-black cursor-pointer" onClick={logout} />

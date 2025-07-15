@@ -6,6 +6,6 @@ export default defineSchema({
     userId: v.string(),
     message: v.string(),
     read: v.boolean(),
-    createdAt: v.number(), // timestamp
+    createdAt: v.number(),
   }).index("by_userId", ["userId"]),
 });
